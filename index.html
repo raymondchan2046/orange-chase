@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Orange Chase</title>
+<meta name="description" content="Dodge a fanged orange for 60 seconds across four parks. Installable, works offline.">
+<meta name="theme-color" content="#e6f1d2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1a12" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Orange Chase">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preload" href="fonts/titan-one-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/nunito-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <div class="brand" id="brand"><i></i>Orange Chase</div>
+    <div class="hud" id="hud" hidden>
+      <div class="chip" id="chipTime"><span>Time left</span><b id="hudTime">60.0</b></div>
+      <div class="chip"><span>Score</span><b id="hudScore">0</b></div>
+      <div class="chip"><span>Best</span><b id="hudBest">0</b></div>
+    </div>
+    <div class="acts">
+      <button class="ghost" id="btnPause" hidden>Pause</button>
+      <button class="ghost" id="btnSound" aria-pressed="true">Sound: on</button>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <canvas id="game" aria-label="The park. A fanged orange chases a stickman."></canvas>
+    <div class="timebar" id="timebar" hidden><i id="timeFill"></i></div>
+    <button class="dash" id="btnDash" hidden>Dash</button>
+
+    <section class="overlay" id="menu">
+      <div class="panel">
+        <h1>Orange Chase</h1>
+        <p class="tag">A fanged orange twice your size wants a bite. Stay out of its mouth for 60 seconds and you win.</p>
+        <ul class="how">
+          <li><b>Run</b>Arrow keys or WASD. On a phone, drag anywhere in the park.</li>
+          <li><b>Dash</b>Space bar or the Dash button. It recharges in a couple of seconds.</li>
+          <li><b>Grab</b>Stars score points. Bolts speed you up, ice freezes the orange, bubbles block one bite.</li>
+        </ul>
+        <p class="eyebrow">Pick a park</p>
+        <div class="levels" id="levels"></div>
+        <div class="install" id="installRow" hidden>
+          <button class="big" id="btnInstall" hidden>Install app</button>
+          <p class="tip" id="installTip" hidden></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="overlay" id="pause" hidden>
+      <div class="panel small">
+        <h2>Paused</h2>
+        <p class="tag">The orange is holding its breath.</p>
+        <div class="btns">
+          <button class="big" id="btnResume">Resume</button>
+          <button class="big alt" id="btnQuit">Parks</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="overlay" id="end" hidden>
+      <div class="panel small">
+        <h2 id="endTitle">You made it</h2>
+        <p class="tag" id="endSub"></p>
+        <div class="rows" id="endRows"></div>
+        <p class="record" id="endRecord" hidden>New best score</p>
+        <div class="btns">
+          <button class="big" id="btnNext">Next park</button>
+          <button class="big" id="btnRetry">Run again</button>
+          <button class="big alt" id="btnMenu">Parks</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="audio.js"></script>
+<script src="scenes.js"></script>
+<script src="draw-world.js"></script>
+<script src="draw-actors.js"></script>
+<script src="game.js"></script>
+<script src="render.js"></script>
+<script src="ui.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

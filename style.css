@@ -1,0 +1,108 @@
+/* fonts ship with the app so it looks the same offline (both under the SIL Open Font License, see fonts/) */
+@font-face{font-family:"Titan One";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/titan-one-latin.woff2) format("woff2")}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:200 1000;font-display:swap;src:url(fonts/nunito-latin.woff2) format("woff2")}
+
+/* base reset; the page is one fixed screen, padded clear of notches and system bars */
+html{box-sizing:border-box;-webkit-text-size-adjust:100%;overscroll-behavior:none;
+  padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+body{margin:0;font-size:14px;overscroll-behavior:none;-webkit-touch-callout:none}
+[hidden]{display:none!important}
+button{touch-action:manipulation}
+
+/* Layout: an arcade cabinet in one screen. A slim scoreboard sits on top, the park fills
+   everything below it, and menus float over the live park so the chase is always visible. */
+:root{
+  --bg:#e6f1d2; --panel:#fffdf2; --fg:#1b2a1d; --muted:#566855; --line:#c5d4ad;
+  --accent:#ff7a00; --accent-ink:#2a1300; --leaf:#2c8a3a; --danger:#d7263d; --gold:#d99a00;
+  --scrim:rgba(230,241,210,.55); --shadow:0 12px 34px rgba(20,45,12,.22);
+  --display:"Titan One","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Nunito","Avenir Next","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1a12; --panel:#18261b; --fg:#eef4e2; --muted:#a3b59c; --line:#2f4332;
+    --accent:#ff8f1f; --accent-ink:#241000; --leaf:#59c267; --danger:#ff5d73; --gold:#ffc83d;
+    --scrim:rgba(10,18,12,.6); --shadow:0 12px 34px rgba(0,0,0,.5); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1a12; --panel:#18261b; --fg:#eef4e2; --muted:#a3b59c; --line:#2f4332;
+  --accent:#ff8f1f; --accent-ink:#241000; --leaf:#59c267; --danger:#ff5d73; --gold:#ffc83d;
+  --scrim:rgba(10,18,12,.6); --shadow:0 12px 34px rgba(0,0,0,.5); color-scheme:dark;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:600;overflow:hidden;
+  -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.app{height:100%;box-sizing:border-box;max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:8px;
+  padding-block:8px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* scoreboard */
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{font-family:var(--display);font-size:1.35rem;letter-spacing:.01em;color:var(--accent);display:flex;align-items:center;gap:8px;margin-right:auto;
+  text-shadow:0 2px 0 color-mix(in srgb,var(--accent-ink) 35%,transparent)}
+.brand i{width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffc46b,#ff7a00 60%,#d95f00);box-shadow:inset 0 -3px 0 rgba(0,0,0,.15);position:relative}
+.brand i::after{content:"";position:absolute;left:8px;top:-5px;width:9px;height:6px;border-radius:0 80% 0 80%;background:var(--leaf)}
+.hud{display:flex;gap:6px}
+.chip{display:flex;flex-direction:column;align-items:center;min-width:64px;padding:3px 10px;border-radius:10px;background:var(--panel);border:1.5px solid var(--line)}
+.chip span{font-size:.62rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.chip b{font-family:var(--display);font-weight:400;font-size:1.05rem;font-variant-numeric:tabular-nums;line-height:1.1}
+.chip.hot b{color:var(--danger)}
+.acts{display:flex;gap:6px}
+button{font:inherit;color:inherit;cursor:pointer}
+.ghost{padding:7px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);font-weight:800;font-size:.82rem}
+.ghost:hover{border-color:var(--accent)}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* park */
+.stage{position:relative;flex:1;min-height:0;border-radius:18px;overflow:hidden;border:3px solid var(--fg);background:#6fb84a}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.timebar{position:absolute;left:0;right:0;top:0;height:7px;background:rgba(0,0,0,.28);z-index:2}
+.timebar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd23f,#ff7a00)}
+.dash{position:absolute;right:16px;bottom:16px;z-index:3;width:84px;height:84px;border-radius:50%;border:3px solid #2a1300;
+  background:radial-gradient(circle at 35% 30%,#ffc46b,#ff7a00 65%);color:#2a1300;font-family:var(--display);font-size:1.05rem;box-shadow:0 5px 0 #2a1300}
+.dash:active{transform:translateY(3px);box-shadow:0 2px 0 #2a1300}
+.dash[disabled]{filter:grayscale(.8);opacity:.6}
+
+/* menus */
+.overlay{position:absolute;inset:0;z-index:5;display:flex;overflow-y:auto;padding:16px;box-sizing:border-box;background:var(--scrim)}
+.panel{width:min(100%,760px);margin:auto;background:var(--panel);border:3px solid var(--fg);border-radius:22px;box-shadow:var(--shadow);padding:20px 22px;box-sizing:border-box;display:flex;flex-direction:column;gap:14px}
+.panel.small{width:min(100%,440px);text-align:center}
+h1,h2{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;line-height:1.05}
+h1{font-size:clamp(2rem,6vw,3.1rem);color:var(--accent);text-shadow:0 3px 0 var(--accent-ink)}
+h2{font-size:clamp(1.7rem,5vw,2.4rem)}
+h2.win{color:var(--leaf)} h2.lose{color:var(--danger)}
+.tag{margin:0;font-size:1.02rem;color:var(--muted);max-width:56ch}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0;padding:0;list-style:none}
+.how li{padding:8px 10px;border-radius:12px;background:color-mix(in srgb,var(--accent) 12%,var(--panel));font-size:.84rem;line-height:1.3;min-width:0}
+.how b{display:block;font-weight:800;color:var(--fg)}
+.eyebrow{margin:0;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:800}
+.levels{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.lvl{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;text-align:left;padding:10px;border-radius:16px;border:2.5px solid var(--line);background:var(--panel);min-width:0;transition:transform .12s,border-color .12s}
+.lvl:hover,.lvl:focus-visible{border-color:var(--accent);transform:translateY(-2px)}
+.lvl canvas{position:static;width:64px;height:64px;border-radius:12px;border:2px solid var(--fg)}
+.lvl .nm{font-family:var(--display);font-size:1.12rem;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.lvl .df{font-family:var(--body);font-weight:800;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;padding:2px 7px;border-radius:99px;background:var(--fg);color:var(--panel)}
+.lvl .bl{font-size:.8rem;color:var(--muted);line-height:1.3;margin-top:2px}
+.lvl .bs{font-size:.76rem;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+.lvl .bs.done{color:var(--leaf)}
+.rows{display:grid;gap:4px;font-variant-numeric:tabular-nums;text-align:left}
+.rows div{display:flex;justify-content:space-between;gap:12px;padding:5px 10px;border-radius:8px;background:color-mix(in srgb,var(--fg) 6%,transparent)}
+.rows .total{background:var(--fg);color:var(--panel);font-family:var(--display);font-size:1.25rem;padding:8px 12px}
+.record{margin:0;font-weight:800;color:var(--gold)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.big{padding:11px 20px;border-radius:14px;border:3px solid var(--accent-ink);background:var(--accent);color:var(--accent-ink);font-family:var(--display);font-size:1.08rem;box-shadow:0 4px 0 var(--accent-ink)}
+.big:active{transform:translateY(3px);box-shadow:0 1px 0 var(--accent-ink)}
+.big.alt{background:var(--panel);color:var(--fg);border-color:var(--fg);box-shadow:0 4px 0 var(--fg)}
+@media (max-width:640px){
+  .brand{font-size:1.05rem}.brand.playing{display:none}
+  .how,.levels{grid-template-columns:1fr}
+  .panel{padding:16px;gap:10px}.how li{padding:6px 10px;font-size:.8rem}.tag{font-size:.95rem}
+  .bar{gap:6px}.hud{gap:4px}.acts{gap:4px}
+  .chip{min-width:46px;padding:3px 7px}.chip span{font-size:.56rem;letter-spacing:.06em}.chip b{font-size:.98rem}
+  .ghost{padding:7px 9px;font-size:.78rem}
+}
+@media (prefers-reduced-motion:reduce){.lvl{transition:none}}
+
+/* install row (only shown when the browser can install the app) */
+.install{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tip{margin:0;font-size:.86rem;color:var(--muted);line-height:1.35}
