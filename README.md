@@ -2,6 +2,8 @@
 
 A fanged orange twice your size wants a bite. You are the stickman. Stay out of its mouth for 60 seconds and you win.
 
+**Play it:** https://raymondchan2046.github.io/orange-chase/
+
 Orange Chase is a small web game that installs like an app: it has a home-screen icon, opens full screen, and keeps working with no connection.
 
 ## How to play
@@ -27,7 +29,7 @@ Orange Chase is a small web game that installs like an app: it has a home-screen
 
 ## Install it on a phone
 
-Open the game's web address on the phone, then:
+Open https://raymondchan2046.github.io/orange-chase/ on the phone, then:
 
 - **Android (Chrome):** tap **Install app** on the game's menu, or use the browser menu and choose *Add to Home screen*.
 - **iPhone or iPad (Safari):** tap **Share**, then **Add to Home Screen**.
@@ -56,3 +58,13 @@ Then open `http://localhost:8000`. Opening `index.html` straight from disk also 
 | `ui.js` | Controls, menus, saved best scores, main loop |
 | `app.js`, `sw.js`, `manifest.webmanifest`, `icons/` | The app shell: install button, offline cache, icons |
 | `fonts/` | Titan One and Nunito, bundled under the SIL Open Font License (license files included) |
+
+## Publishing a change
+
+The live site is served by GitHub Pages from the `gh-pages` branch. After committing to `main`, publish it with:
+
+```bash
+git push origin main:gh-pages
+```
+
+Players who already installed the app get the new version the second time they open it after the update.
